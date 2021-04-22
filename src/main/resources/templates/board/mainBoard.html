@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<table class="table">
+    <thead class="table-light">
+    <tr>
+        <th>#</th>
+        <th>제목</th>
+        <th>내용</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="board : ${BoardList}">
+            <td th:text="${boardStat.count}"></td>
+            <td th:text="${board.title}"></td>
+            <td th:text="${board.content}"></td>
+            <td th:text="${board.getMember().memberName}"></td>
+            <td th:text="${board.getCreatedDate()}"></td>
+            <td th:hidden="${board.boardId}"></td>
+        </tr>
+    </tbody>
+</table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination" >
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li th:each="page : ${BoardList.getTotalPages()}" class="page-item">
+                <a th:text="${pageStat.count}" class="page-link" href="#">1</a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div> <!-- /container -->
+</body>
+</html>

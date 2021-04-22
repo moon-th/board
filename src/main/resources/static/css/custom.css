@@ -1,0 +1,21 @@
+a{
+    color: #212529;
+}
+
+a:hover{
+    color: #000000;
+    font-size: large;
+}
+
+.nav-link {
+    font-weight: bold;
+}
+
+/*페이징 바 */
+.pagination {
+    justify-content: center!important;
+}
+
+.table>:not(caption)>*>* {
+    text-align: center;
+}
