@@ -46,16 +46,26 @@ public class BoardController {
     public String MainBoard(Model model
             , @RequestParam(value = "page",defaultValue = "0" ,required = false) int page){
         Page<Board> boardList = boardService.getBoardList(page);
+        BoardSearch boardSearch = new BoardSearch("createdDate","DESC");
         model.addAttribute("BoardList", boardList);
+        model.addAttribute("boardSearch", boardSearch);
         return "/board/mainBoard";
     }
 
-    @GetMapping("/main/search")
+    /**
+     * querydsl 사용하여 페이징 및 검색
+     * @param model
+     * @param page
+     * @param boardSearch
+     * @return
+     */
+    @PostMapping("/main")
     public String MainBoardSearch(Model model
             , @RequestParam(value = "page",defaultValue = "0" ,required = false) int page
             , @ModelAttribute("boardSearch") BoardSearch boardSearch){
         Page<Board> boardList = boardService.getBoardSearchList(page,boardSearch);
         model.addAttribute("BoardList", boardList);
+        model.addAttribute("boardSearch", boardSearch);
         return "/board/mainBoard";
     }
 

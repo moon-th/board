@@ -25,14 +25,16 @@ public class BoardService {
     private final BoardJpaRepository boardJpaRepository;
 
     private final BoardQuerydslRepository boardQuerydslRepository;
+
     //전체 게시물 조회
-    public Page<Board> getBoardList( int page) {
+    public Page<Board> getBoardList(int page) {
 //     boardJpaRepository.findAll(); 단순 data-JPA 사용
         PageRequest pageRequest = PageRequest.of(page, 15, Sort.by(Sort.Direction.DESC, "createdDate"));
         return boardJpaRepository.findByBoard(pageRequest);
     }
 
     public Page<Board> getBoardSearchList(int page, BoardSearch boardSearch) {
-        boardQuerydslRepository.getSearchBoardList(page,boardSearch);
+        PageRequest pageRequest = PageRequest.of(page, 15, Sort.by(Sort.Direction.fromString(boardSearch.getOrderBy()), boardSearch.getSort()));
+        return boardQuerydslRepository.getSearchBoardList(pageRequest, boardSearch);
     }
 }

@@ -10,11 +10,11 @@
 <table class="table">
     <thead class="table-light">
     <tr>
-        <th>추천</th>
-        <th>제목</th>
-        <th>내용</th>
-        <th>작성자</th>
-        <th>작성일</th>
+        <th class="sort"><a  >추천</a></th>
+        <th class="sort"><a  >제목</a></th>
+        <th class="sort"><a  >내용</a></th>
+        <th class="sort"><a  >작성자</a></th>
+        <th class="sort"h><a  >작성일</a></th>
         <th></th>
     </tr>
     </thead>
@@ -31,17 +31,22 @@
 </table>
 
 </div> <!-- /container -->
-<form th:object="${boardSearch}" id="search" method="get" th:action="@{/Board/main/search}">
+<form th:object="${boardSearch}" id="searchForm" method="post" th:action="@{/Board/main}">
 <div class="main-bottom" >
     <div class="bottomNav">
-        <select th:name="category" class="form-select" aria-label="Default select example">
+        <select id="category" th:name="category" class="form-select" aria-label="Default select example">
             <option value="title" selected>제목</option>
             <option value="content">내용</option>
             <option value="member">글쓴이</option>
         </select>
         <div class="input-group mb-3" style="height: 38px">
-            <input th:name="search" type="text" class="form-control"  aria-label="Recipient's username" aria-describedby="button-addon2">
+            <input th:name="search" id="search"  type="text" class="form-control"  aria-label="Recipient's username" aria-describedby="button-addon2">
             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">검색</button>
+            <input id="pageNum" th:if="${boardSearch.search} == '' or ${boardSearch.search} == null" type="hidden" name="page" th:value="0">
+            <input id="pageNum" th:unless="${boardSearch.search} == '' or ${boardSearch.search} == null" type="hidden" name="page" th:value="${BoardList.getNumber()}">
+            <input type="hidden" id="orderBy" name="orderBy" th:value="${boardSearch.getOrderBy()}">
+            <input type="hidden" id="sort" name="sort" th:value="${boardSearch.getSort()}">
+
         </div>
 
     </div>
@@ -53,17 +58,17 @@
 <nav aria-label="Page navigation example">
         <ul class="pagination" >
             <li class="page-item">
-                <a class="page-link" th:href="@{main(page=${BoardList.getNumber()-1})}" aria-label="Previous">
+                <a class="page-link first" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
 
             <li th:each="page : ${#numbers.sequence(1,BoardList.getTotalPages())}" class="page-item">
-                <a th:text="${pageStat.count}" th:href="@{main(page=${pageStat.index})}" class="page-link"></a>
+                <a th:text="${pageStat.count}"  onclick="pagingFn(this)" class="page-link number"></a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" th:href="@{main(page=${BoardList.getNumber()+1})}" aria-label="Next">
+                <a class="page-link end" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -72,4 +77,78 @@
 </form>
 
 </body>
+<script th:inline="javascript">
+
+$(document).ready(function(){
+
+    //클릭 이벤트
+    initClick();
+
+    //초기화면 셋팅
+    initScreen();
+
+})
+
+//초기화면 셋팅
+function initScreen(){
+    //카테고리,검색 값 셋팅
+    const category = [[${boardSearch.category}]];
+    const search = [[${boardSearch.search}]];
+
+    if(category  == null){
+        $('#category').val('title');
+    }else{
+        $('#category').val(category);
+    }
+        $('#search').val(search);
+
+}
+
+
+//클릭 이벤트
+function initClick(){
+    //페이지 가장 앞으로
+    $('.first').click(function() {
+        $('#pageNum').val(0);
+        $('#searchForm').submit();
+    })
+    //페이지 가장 뒤로
+    $('.end').click(function() {
+        $('#pageNum').val([[${BoardList.getTotalPages() - 1}]]);
+        $('#searchForm').submit();
+    })
+
+    //정렬
+    $('.sort a').click(function(){
+        //정렬기준
+        const sortText = this.text;
+        var sort = '';
+        if(sortText == '제목'){
+            sort = 'title'
+        }else if(sortText == '내용'){
+            sort = 'content'
+        }else if(sortText == '작성자'){
+            sort = 'member'
+        }else{
+            sort = 'createdDate'
+        }
+        $('#sort').val(sort);
+        //정렬조건
+        if($('#orderBy').val() == 'DESC'){
+            $('#orderBy').val('ASC')
+        }else{
+            $('#orderBy').val('DESC')
+        }
+        $('#searchForm').submit();
+    })
+}
+
+//페이징 클릭 이벤트
+function pagingFn(page){
+    const pageNum =  (Number(page.text)-1)
+    $('#pageNum').val(pageNum);
+    $('#searchForm').submit();
+}
+
+</script>
 </html>

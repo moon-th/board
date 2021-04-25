@@ -5,6 +5,7 @@ a{
 a:hover{
     color: #000000;
     font-size: large;
+    cursor: pointer;
 }
 
 .nav-link {
@@ -32,4 +33,6 @@ a:hover{
     display: inline-flex;
     margin: 0px 60px 0px 60px;
     padding: 0px 12px 0px 12px;
+}
+.table-light > tr > th{
 }
