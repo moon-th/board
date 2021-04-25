@@ -5,13 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<div class="container">
+<div class="container" style="height: 800px">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
-
 <table class="table">
     <thead class="table-light">
     <tr>
-        <th>#</th>
+        <th>추천</th>
         <th>제목</th>
         <th>내용</th>
         <th>작성자</th>
@@ -30,26 +29,47 @@
         </tr>
     </tbody>
 </table>
-    <nav aria-label="Page navigation example">
+
+</div> <!-- /container -->
+<form th:object="${boardSearch}" id="search" method="get" th:action="@{/Board/main/search}">
+<div class="main-bottom" >
+    <div class="bottomNav">
+        <select th:name="category" class="form-select" aria-label="Default select example">
+            <option value="title" selected>제목</option>
+            <option value="content">내용</option>
+            <option value="member">글쓴이</option>
+        </select>
+        <div class="input-group mb-3" style="height: 38px">
+            <input th:name="search" type="text" class="form-control"  aria-label="Recipient's username" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">검색</button>
+        </div>
+
+    </div>
+    <div style="margin-left: 500px;">
+        <button type="button" class="btn btn-light">글쓰기</button>
+    </div>
+</div>
+
+<nav aria-label="Page navigation example">
         <ul class="pagination" >
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+                <a class="page-link" th:href="@{main(page=${BoardList.getNumber()-1})}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
 
-            <li th:each="page : ${BoardList.getTotalPages()}" class="page-item">
-                <a th:text="${pageStat.count}" class="page-link" href="#">1</a>
+            <li th:each="page : ${#numbers.sequence(1,BoardList.getTotalPages())}" class="page-item">
+                <a th:text="${pageStat.count}" th:href="@{main(page=${pageStat.index})}" class="page-link"></a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+                <a class="page-link" th:href="@{main(page=${BoardList.getNumber()+1})}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         </ul>
     </nav>
+</form>
 
-</div> <!-- /container -->
 </body>
 </html>

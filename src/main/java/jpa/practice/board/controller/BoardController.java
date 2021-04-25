@@ -1,16 +1,19 @@
 package jpa.practice.board.controller;
 
 import jpa.practice.board.entity.Board;
+import jpa.practice.board.search.BoardSearch;
 import jpa.practice.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/Board")
@@ -37,11 +40,21 @@ public class BoardController {
      * POST 방식으로 보내진 데이터는 url상에 나타나지 않고
      * http requestbody안에 담겨져서 오기 때문에
      * @RequsetBody를 통해 값을 가져와야 한다.
+     *
      */
     @GetMapping("/main")
     public String MainBoard(Model model
             , @RequestParam(value = "page",defaultValue = "0" ,required = false) int page){
         Page<Board> boardList = boardService.getBoardList(page);
+        model.addAttribute("BoardList", boardList);
+        return "/board/mainBoard";
+    }
+
+    @GetMapping("/main/search")
+    public String MainBoardSearch(Model model
+            , @RequestParam(value = "page",defaultValue = "0" ,required = false) int page
+            , @ModelAttribute("boardSearch") BoardSearch boardSearch){
+        Page<Board> boardList = boardService.getBoardSearchList(page,boardSearch);
         model.addAttribute("BoardList", boardList);
         return "/board/mainBoard";
     }

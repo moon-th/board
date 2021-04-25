@@ -4,6 +4,8 @@ import com.querydsl.core.QueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jpa.practice.board.entity.Board;
 import jpa.practice.board.repository.BoardJpaRepository;
+import jpa.practice.board.repository.BoardQuerydslRepository;
+import jpa.practice.board.search.BoardSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardJpaRepository boardJpaRepository;
+
+    private final BoardQuerydslRepository boardQuerydslRepository;
     //전체 게시물 조회
     public Page<Board> getBoardList( int page) {
 //     boardJpaRepository.findAll(); 단순 data-JPA 사용
@@ -28,4 +32,7 @@ public class BoardService {
         return boardJpaRepository.findByBoard(pageRequest);
     }
 
+    public Page<Board> getBoardSearchList(int page, BoardSearch boardSearch) {
+        boardQuerydslRepository.getSearchBoardList(page,boardSearch);
+    }
 }

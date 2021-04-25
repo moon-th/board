@@ -19,3 +19,17 @@ a:hover{
 .table>:not(caption)>*>* {
     text-align: center;
 }
+.bottomNav{
+    display: inline-flex;
+    width:500px;
+}
+.form-select{
+    height: 38px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.main-bottom{
+    display: inline-flex;
+    margin: 0px 60px 0px 60px;
+    padding: 0px 12px 0px 12px;
+}
