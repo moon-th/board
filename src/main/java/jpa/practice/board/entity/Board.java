@@ -19,7 +19,7 @@ public class Board extends BasicEntity{
     @JsonIgnore @Column(name = "board_id")
     private Long boardId;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member; //작성자
 

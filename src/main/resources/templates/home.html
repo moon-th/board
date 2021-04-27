@@ -6,8 +6,29 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+ <div th:replace="fragments/bodyHeader :: bodyHeader" />
+  <div class="login-item" align="center">
+    <h2 style="font-weight: bold; font-size: 3rem;"> LOGIN</h2>
 
+    <div class="input-group flex-nowrap login">
+        <span class="input-group-text" id="addon-wrapping-username" > Nm : </span>
+        <input type="text" class="form-control" placeholder="name" aria-label="Username" aria-describedby="addon-wrapping">
+    </div>
+
+    <div class="input-group flex-nowrap login">
+        <span class="input-group-text" id="addon-wrapping-password"> PW : </span>
+        <input type="text" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="addon-wrapping">
+    </div>
+
+   <div align="center">
+     <button type="button" class="btn btn-secondary btn-lg login-button"> 로그인 </button>
+   </div>
+
+   <div  align="center">
+     <a href="/member/join"><button type="button" class="btn btn-secondary btn-lg login-button"> 회원가입 </button></a>
+   </div>
+
+  </div>
 </div> <!-- /container -->
 </body>
 </html>

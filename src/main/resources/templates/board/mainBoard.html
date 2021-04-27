@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<form th:object="${boardSearch}" id="searchForm" method="post" th:action="@{/Board/main}">
 <div class="container" style="height: 800px">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
 <table class="table">
@@ -31,8 +32,8 @@
 </table>
 
 </div> <!-- /container -->
-<form th:object="${boardSearch}" id="searchForm" method="post" th:action="@{/Board/main}">
-<div class="main-bottom" >
+
+<div class="container" style="display: flex">
     <div class="bottomNav">
         <select id="category" th:name="category" class="form-select" aria-label="Default select example">
             <option value="title" selected>제목</option>
@@ -50,7 +51,7 @@
         </div>
 
     </div>
-    <div style="margin-left: 500px;">
+    <div style="margin-left: 688px;">
         <button type="button" class="btn btn-light">글쓰기</button>
     </div>
 </div>

@@ -36,3 +36,17 @@ a:hover{
 }
 .table-light > tr > th{
 }
+
+.login-item{
+    margin: 150px 20px 20px 20px;
+}
+
+.login{
+    padding: 5px;
+    width: 400px;
+}
+
+.login-button{
+    width: 390px;
+    margin: 5px;
+}
