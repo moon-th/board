@@ -18,10 +18,11 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping("/dp")
-    public int dpCheck(@RequestParam("username") String username){
-        int memberCount = memberService.dpCheck(username);
+    public int dpCheck(@RequestParam("memberName") String memberName){
+        int memberCount = memberService.dpCheck(memberName);
         return memberCount;
     }
+
 
 
 }

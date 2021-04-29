@@ -7,28 +7,37 @@
 <body>
 <div class="container">
  <div th:replace="fragments/bodyHeader :: bodyHeader" />
-  <div class="login-item" align="center">
+  <div th:if="${session.Member == null }" class="login-item" align="center">
     <h2 style="font-weight: bold; font-size: 3rem;"> LOGIN</h2>
+
+      <form action="/member/login" method="post" role="form">
 
     <div class="input-group flex-nowrap login">
         <span class="input-group-text" id="addon-wrapping-username" > Nm : </span>
-        <input type="text" class="form-control" placeholder="name" aria-label="Username" aria-describedby="addon-wrapping">
+        <input type="text" name="memberName" class="form-control" placeholder="name" aria-label="Username" aria-describedby="addon-wrapping">
     </div>
 
     <div class="input-group flex-nowrap login">
         <span class="input-group-text" id="addon-wrapping-password"> PW : </span>
-        <input type="text" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="addon-wrapping">
+        <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="addon-wrapping">
     </div>
 
+
+
    <div align="center">
-     <button type="button" class="btn btn-secondary btn-lg login-button"> 로그인 </button>
+     <button type="submit" class="btn btn-secondary btn-lg login-button"> 로그인 </button>
    </div>
 
    <div  align="center">
      <a href="/member/join"><button type="button" class="btn btn-secondary btn-lg login-button"> 회원가입 </button></a>
    </div>
 
+  </form>
   </div>
-</div> <!-- /container -->
+
+    <div th:unless="${session.Member == null }" class="login-item" align="center">
+        <h2 style="font-weight: bold; font-size: 3rem;"> 환영합니다</h2>
+        <h3 th:text="${session.Member.getMemberName()+'님 ^o^'}" ></h3>
+    </div> <!-- /container -->
 </body>
 </html>

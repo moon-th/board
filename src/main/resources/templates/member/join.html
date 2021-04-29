@@ -2,67 +2,90 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header">
     <title>Hello</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
-
     <div class="login-item" align="center">
         <h2 style="font-weight: bold; font-size: 3rem;"> 회원정보</h2>
 
-
+    <form role="form" action="/member/join"  method="post" id="joinForm" th:object="${MemberDto}">
         <div class="input-group flex-nowrap login">
             <span class="input-group-text" id="addon-wrapping-name"> Nm : </span>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+            <input th:field="*{memberName}"  type="text" id="memberName" name="memberName" class="form-control" placeholder="memberName" aria-label="memberName" aria-describedby="addon-wrapping">
         </div>
 
         <div class="input-group flex-nowrap login">
             <span class="input-group-text" id="addon-wrapping-password"> PW : </span>
-            <input type="text" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
+            <input th:field="*{password}" name="password" type="password" id="password" class="form-control" placeholder="4자리 이상 입력해 주세요" aria-label="Password" aria-describedby="addon-wrapping">
         </div>
-
+    </form>
 
         <div  align="center">
             <a id="dpCheck" ><button type="button" class="btn btn-secondary btn-lg login-button"> 중복검사 </button></a>
         </div>
 
-        <div  align="center" style="display: none">
-            <a href="/member/join"><button type="button" class="btn btn-secondary btn-lg login-button"> 회원가입 </button></a>
+        <div  align="center" id="div-join" style="display: none">
+            <a id="joinMember" >  <button type="button" class="btn btn-secondary btn-lg login-button"> 회원가입 </button></a>
         </div>
-
     </div>
-
 </div>
 </body>
 <script th:inline="javascript">
 $(document).ready(function(){
-
  //클릭 이벤트
  initClick()
 
+})
+let idCheck = false;
+function initClick(){
 
+// 중복검사
+$('#dpCheck').click(function(){
+
+    $.ajax({
+        type: "POST",
+        url : "/api/member/dp",
+        data:{
+            "memberName" : $('#memberName').val()
+        },
+        success:function(data){
+            if(data > 0){
+                alert('이미 가입하신 회원 입니다.')
+                $('#memberName').val('');
+                $('#memberName').focus();
+            }else{
+                alert('가입 가능한 회원 입니다.')
+                $('#password').focus();
+                idCheck = true
+            }
+        },
+        error:function(){
+            alert("오류")
+        }
+    })
+})
+//이름 입력을 안할시 회원가입 버튼 가리기
+$('#memberName').blur(function(){
+    if($('#memberName').val().length < 1){
+        $('#div-join').css('display','none')
+        idCheck = false;
+    }
+})
+
+//비밀번호 입력시 4자리 이상 입력
+$('#password').keydown(function(){
+    if($('#password').val().length >= 3 && $('#memberName').val().length > 0 && idCheck == true){
+        $('#div-join').css('display','block')
+    }else{
+        $('#div-join').css('display','none')
+    }
 
 })
 
-function initClick(){
-    // 중복검사
-    $('#dpCheck').click(function(){
-
-        $.ajax({
-            type: "POST",
-            url : "/api/member/dp",
-            data:{
-                "username" : $('#username').val()
-            },
-            success:function(data){
-                alert(data)
-            },
-            error:function(){
-                alert("오류")
-            }
-        })
-    })
+$('#joinMember').click(function(){
+    $('#joinForm').submit();
+})
 
 
 }
