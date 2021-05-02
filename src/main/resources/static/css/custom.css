@@ -50,3 +50,10 @@ a:hover{
     width: 390px;
     margin: 5px;
 }
+.board-form{
+    margin: 5px 0px 5px 0px;
+}
+.text-form{
+    height: 500px;
+    resize: none;
+}

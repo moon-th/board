@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container" style="height: 800px">
+        <div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<form th:object="${boardForm}" role="form" action="/Board/regist" method="post">
+    <div class="input-group flex-nowrap board-form">
+        <span style="width: 82px;" class="input-group-text" id="addon-wrapping-title" > 제목 : </span>
+        <input style="background-color: white;" readonly type="text"  th:field="*{title}" class="form-control"  aria-describedby="addon-wrapping">
+    </div>
+
+    <div class="input-group board-form">
+        <span style="width: 82px;" class="input-group-text"> 내용 : </span>
+        <textarea style="background-color: white;width: 82px;" readonly  th:field="*{content}" class="form-control text-form" aria-label="With textarea"></textarea>
+    </div>
+
+    <div class="input-group flex-nowrap board-form">
+        <span class="input-group-text" id="addon-wrapping-member" > 작성자 : </span>
+        <input style="background-color: white" readonly type="text"  th:field="*{member.memberName}" class="form-control"  aria-describedby="addon-wrapping">
+    </div>
+
+    <div th:if="${session.Member.memberId == boardForm.member.memberId}" align="right">
+        <button  type="submit" class="btn btn-light">수정</button>
+        <button  type="button" class="btn btn-light">삭제</button>
+    </div>
+
+</form>
+
+</div> <!-- /container -->
+</body>
+</html>

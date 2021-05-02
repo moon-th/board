@@ -1,4 +1,4 @@
-package jpa.practice.board.search;
+package jpa.practice.board.dto;
 
 import jpa.practice.board.entity.Member;
 import lombok.Builder;

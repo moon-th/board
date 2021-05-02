@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Board extends BasicEntity{
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore @Column(name = "board_id")
     private Long boardId;
 
@@ -27,5 +27,9 @@ public class Board extends BasicEntity{
 
     private String content; //내용
 
-
+    public Board(Member member, String title, String content) {
+        this.member = member;
+        this.title = title;
+        this.content = content;
+    }
 }

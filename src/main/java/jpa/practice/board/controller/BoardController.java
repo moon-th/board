@@ -1,19 +1,19 @@
 package jpa.practice.board.controller;
 
+import jpa.practice.board.dto.BoardForm;
 import jpa.practice.board.entity.Board;
-import jpa.practice.board.search.BoardSearch;
+import jpa.practice.board.dto.BoardSearch;
+import jpa.practice.board.entity.Member;
 import jpa.practice.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Stream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/Board")
@@ -69,5 +69,42 @@ public class BoardController {
         return "/board/mainBoard";
     }
 
+    /**
+     * 게시판 글쓰기 화면으로 이동
+     * @param model
+     * @return
+     */
+    @GetMapping("/regist")
+    public String ResistBoard(Model model){
+        model.addAttribute("boardForm", new BoardForm());
+        return "/board/regist";
+    }
 
+    /**
+     * 게시물 저장
+     * @param boardForm
+     * @param request
+     * @return
+     */
+    @PostMapping("/regist")
+    public String insertBoard(@ModelAttribute("boardForm") BoardForm boardForm, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Member member = (Member) session.getAttribute("Member");
+
+        Board board = Board.builder()
+                .title(boardForm.getTitle())
+                .content(boardForm.getContent())
+                .member(member)
+                .build();
+        boardService.insertBoard(board);
+        return "redirect:/Board/main";
+    }
+
+    @GetMapping("/detail")
+    public String BoardDetail(@RequestParam("id") Long id,Model model){
+        Board findBoard = boardService.getBoardDetail(id);
+        BoardForm boardForm = new BoardForm(findBoard.getTitle(), findBoard.getContent(), findBoard.getMember());
+        model.addAttribute("boardForm", boardForm);
+        return "/board/detail";
+    }
 }

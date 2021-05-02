@@ -3,26 +3,21 @@ package jpa.practice.board.repository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jpa.practice.board.entity.Board;
-import jpa.practice.board.entity.QBoard;
-import jpa.practice.board.entity.QMember;
-import jpa.practice.board.search.BoardSearch;
+import jpa.practice.board.dto.BoardSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static jpa.practice.board.entity.QBoard.*;
 import static jpa.practice.board.entity.QMember.member;
 import static org.springframework.util.StringUtils.hasText;
-import static org.springframework.util.StringUtils.isEmpty;
 
 @Repository
 @RequiredArgsConstructor
@@ -97,5 +92,9 @@ public class BoardQuerydslRepository {
             }
         }
         return expression;
+    }
+
+    public void insertBoard(Board board) {
+        em.persist(board);
     }
 }

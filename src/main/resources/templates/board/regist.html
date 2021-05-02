@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container" style="height: 800px">
+        <div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<form th:object="${boardForm}" role="form" action="/Board/regist" method="post">
+    <div class="input-group flex-nowrap board-form">
+        <span class="input-group-text" id="addon-wrapping-username" > 제목 : </span>
+        <input type="text" th:field="*{title}" class="form-control"  aria-describedby="addon-wrapping">
+    </div>
+    <div class="input-group board-form">
+        <span class="input-group-text"> 내용 : </span>
+        <textarea th:field="*{content}" class="form-control text-form" aria-label="With textarea"></textarea>
+    </div>
+
+    <div align="right">
+        <button  type="submit" class="btn btn-light">저장</button>
+        <button  type="button" class="btn btn-light">취소</button>
+    </div>
+
+</form>
+
+</div> <!-- /container -->
+</body>
+</html>
