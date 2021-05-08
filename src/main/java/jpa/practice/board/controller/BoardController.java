@@ -100,10 +100,30 @@ public class BoardController {
         return "redirect:/Board/main";
     }
 
+
+    /**
+     * 게시물 수정/삭제
+     * @param boardForm
+     * @param request
+     * @return
+     */
+    @PostMapping("/update")
+    public String updateBoard(@ModelAttribute("boardForm") BoardForm boardForm, @RequestParam("type") String type, HttpServletRequest request){
+
+        Board board = Board.builder()
+                .boardId(boardForm.getBoardId())
+                .title(boardForm.getTitle())
+                .content(boardForm.getContent())
+                .build();
+        boardService.updateBoard(board,type);
+        return "redirect:/Board/main";
+    }
+
+
     @GetMapping("/detail")
     public String BoardDetail(@RequestParam("id") Long id,Model model){
         Board findBoard = boardService.getBoardDetail(id);
-        BoardForm boardForm = new BoardForm(findBoard.getTitle(), findBoard.getContent(), findBoard.getMember());
+        BoardForm boardForm = new BoardForm(findBoard.getBoardId(),findBoard.getTitle(), findBoard.getContent(), findBoard.getMember());
         model.addAttribute("boardForm", boardForm);
         return "/board/detail";
     }

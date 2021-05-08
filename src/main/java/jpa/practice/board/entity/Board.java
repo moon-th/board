@@ -27,6 +27,9 @@ public class Board extends BasicEntity{
 
     private String content; //내용
 
+    @Column(name = "LIKE_COUNT")
+    private Long likeCount; //좋아요
+
     public Board(Member member, String title, String content) {
         this.member = member;
         this.title = title;

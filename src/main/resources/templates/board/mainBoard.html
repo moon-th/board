@@ -21,7 +21,7 @@
     </thead>
     <tbody>
         <tr class="board-row" th:each="board : ${BoardList}">
-            <td th:text="${boardStat.count}"></td>
+            <td th:text="${board.likeCount}"></td>
             <td th:text="${board.title}"></td>
             <td th:text="${board.content}"></td>
             <td th:text="${board.getMember().memberName}"></td>
@@ -130,6 +130,8 @@ function initClick(){
             sort = 'content'
         }else if(sortText == '작성자'){
             sort = 'member'
+        }else if(sortText == '추천'){
+            sort = 'likeCount'
         }else{
             sort = 'createdDate'
         }

@@ -39,4 +39,12 @@ public class BoardService {
     public Board getBoardDetail(Long id) {
         return boardJpaRepository.findById(id).get();
     }
+
+    public void updateBoard(Board board,String type) {
+        if(type.equals("U")){
+            boardQuerydslRepository.updateBoard(board);
+        }else if(type.equals("D")){
+            boardQuerydslRepository.deleteBoard(board);
+        }
+    }
 }

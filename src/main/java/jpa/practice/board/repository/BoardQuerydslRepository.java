@@ -50,6 +50,39 @@ public class BoardQuerydslRepository {
         return new PageImpl<>(content, page, total);
     }
 
+
+    /**
+     * 저장
+     * @param board
+     */
+    public void insertBoard(Board board) {
+        em.persist(board);
+    }
+
+    /**
+     * 수정
+     * @param parameter
+     */
+    public void updateBoard(Board parameter) {
+        long count = query
+                .update(board)
+                .set(board.title, parameter.getTitle())
+                .set(board.content, parameter.getContent())
+                .where(board.boardId.eq(parameter.getBoardId()))
+                .execute();
+    }
+
+    /**
+     * 삭제
+     * @param parameter
+     */
+    public void deleteBoard(Board parameter) {
+        long count = query
+                .delete(board)
+                .where(board.boardId.eq(parameter.getBoardId()))
+                .execute();
+    }
+
     /**
      * 리스트 정렬
      * @param page
@@ -69,6 +102,8 @@ public class BoardQuerydslRepository {
                         return new OrderSpecifier(direction, board.member.memberName);
                     case "createdDate":
                         return new OrderSpecifier(direction, board.createdDate);
+                    case "likeCount":
+                        return new OrderSpecifier(direction, board.likeCount);
                 }
             }
         }
@@ -94,7 +129,4 @@ public class BoardQuerydslRepository {
         return expression;
     }
 
-    public void insertBoard(Board board) {
-        em.persist(board);
-    }
 }

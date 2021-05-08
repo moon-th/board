@@ -8,29 +8,68 @@
 <div class="container" style="height: 800px">
         <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
-<form th:object="${boardForm}" role="form" action="/Board/regist" method="post">
+<form th:object="${boardForm}" role="form" id="updateForm" action="/Board/update" method="post">
     <div class="input-group flex-nowrap board-form">
         <span style="width: 82px;" class="input-group-text" id="addon-wrapping-title" > 제목 : </span>
-        <input style="background-color: white;" readonly type="text"  th:field="*{title}" class="form-control"  aria-describedby="addon-wrapping">
+        <input style="background-color: white;" readonly type="text" id="title" name="title" th:field="*{title}" class="form-control"  aria-describedby="addon-wrapping">
     </div>
 
     <div class="input-group board-form">
         <span style="width: 82px;" class="input-group-text"> 내용 : </span>
-        <textarea style="background-color: white;width: 82px;" readonly  th:field="*{content}" class="form-control text-form" aria-label="With textarea"></textarea>
+        <textarea style="background-color: white;width: 82px;" readonly  id="content" name="content" th:field="*{content}" class="form-control text-form" aria-label="With textarea"></textarea>
     </div>
 
     <div class="input-group flex-nowrap board-form">
         <span class="input-group-text" id="addon-wrapping-member" > 작성자 : </span>
         <input style="background-color: white" readonly type="text"  th:field="*{member.memberName}" class="form-control"  aria-describedby="addon-wrapping">
+        <input type="hidden" name="boardId" th:field="*{boardId}">
     </div>
 
     <div th:if="${session.Member.memberId == boardForm.member.memberId}" align="right">
-        <button  type="submit" class="btn btn-light">수정</button>
-        <button  type="button" class="btn btn-light">삭제</button>
+        <input type="hidden" id="type" name="type" value="">
+        <a   id="update" class="btn btn-light">수정</a>
+        <a   id="delete" class="btn btn-light">삭제</a>
+    </div>
+
+    <div th:unless="${session.Member.memberId == boardForm.member.memberId}" align="right">
+        <a   id="like" class="btn btn-light">추천</a>
     </div>
 
 </form>
 
 </div> <!-- /container -->
 </body>
+<script th:inline="javascript">
+$(document).ready(function(){
+
+    const sessionId = [[${session.Member.memberId}]];
+    const memberId = [[${boardForm.member.memberId}]];
+
+    if(sessionId == memberId){
+        $('#title').removeAttr("readonly")
+        $('#content').removeAttr("readonly")
+    }
+
+    $('#update').click(function(){
+        $('#type').val("U")
+        $('#updateForm').submit()
+    })
+    $('#delete').click(function(){
+        $('#type').val("D")
+        $('#updateForm').submit()
+    })
+
+    $('#like').click(function(){
+        likeCheck()
+    })
+
+})
+
+function likeCheck(){
+
+}
+
+</script>
+
+
 </html>
